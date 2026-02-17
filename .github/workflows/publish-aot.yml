@@ -18,7 +18,7 @@ jobs:
         dotnet-version: '10'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore src/SoloSharpRun.slnx
 
     - name: Publish Native AOT app win-x64
       run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-x64 /p:Version=1.0.0.0
