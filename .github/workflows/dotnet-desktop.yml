@@ -1,0 +1,66 @@
+name: Build MSIX Bundle
+
+on:
+  workflow_dispatch      
+  
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+        
+      - name: Publish Native AOT app win-x64
+        run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-x64 /p:Version=1.0.0.0
+
+      - name: Publish Native AOT app win-arm64
+        run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-arm64 /p:Version=1.0.0.0
+
+      - name: Prepare MSIX manifest and files
+      -  shell: bash
+        run: |
+          mv src\artifacts\bin\SoloSharpRun\release_win-x64\native\SoloSharpRun.exe src\bundle\x64\SoloSharpRun.exe
+          mv src\artifacts\bin\SoloSharpRun\release_win-xarm4\native\SoloSharpRun.exe src\bundle\arm64\SoloSharpRun.exe
+          mv src\installer\* src\bundle\x64\
+          mv src\installer\* src\bundle\arm64\
+          mv src\installer\msix\appx_manifest.template src\bundle\x64\AppxManifest.xml
+          mv src\installer\msix\appx_manifest.template src\bundle\arm64\AppxManifest.xml
+
+      - name: Update manifest version
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'src/bundle/**/AppxManifest.xml'
+          search-text: '%VERSION%'
+          replacement-text: '1.0.0.0'
+          encoding: 'utf8'
+          
+      - name: Update x64 manifest architecture
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'src/bundle/x64/AppxManifest.xml'
+          search-text: '%PROCESSOR_ARCHITECTURE%'
+          replacement-text: 'win-x64'
+          encoding: 'utf8'
+          
+      - name: Update arm64 manifest architecture
+        uses: richardrigutins/replace-in-files@v2
+        with:
+          files: 'src/bundle/arm64/AppxManifest.xml'
+          search-text: '%PROCESSOR_ARCHITECTURE%'
+          replacement-text: 'win-arm64'
+          encoding: 'utf8'
+
+      - name: Create Architecture MSIXs
+        run: |
+          MakeAppx.exe pack /d "src/bundle/x64" /p "src/bundle/output/App_x64.msix"
+          MakeAppx.exe pack /d "src/bundle/arm64" /p "src/bundle/output/App_arm64.msix"
+
+      # 4. Create the MSIX Bundle
+      - name: Create MSIX Bundle
+        run: |
+          MakeAppx.exe bundle /d "src/bundle/output" /p "./dist/SoloSharpRun.msixbundle"
+
+      # 5. Sign the Bundle (Crucial for installation
