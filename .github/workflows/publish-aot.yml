@@ -1,10 +1,8 @@
 name: Publish Native AOT App
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_dispatch
+  
 jobs:
   publish-aot:
     runs-on: windows-latest
