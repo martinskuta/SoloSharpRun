@@ -21,7 +21,7 @@ jobs:
         run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-arm64 /p:Version=1.0.0.0
 
       - name: Prepare MSIX manifest and files
-      -  shell: bash
+        shell: bash
         run: |
           mv src\artifacts\bin\SoloSharpRun\release_win-x64\native\SoloSharpRun.exe src\bundle\x64\SoloSharpRun.exe
           mv src\artifacts\bin\SoloSharpRun\release_win-xarm4\native\SoloSharpRun.exe src\bundle\arm64\SoloSharpRun.exe
