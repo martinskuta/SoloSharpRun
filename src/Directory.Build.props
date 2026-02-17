@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+        <!-- Enable .NET code analysis (this is necessary for projects that target 3.1 or earlier). -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <!--Generic settings-->
+        <UseArtifactsOutput>true</UseArtifactsOutput>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <!--Version settings-->
+        <Version>999.0.0.0</Version>
+    </PropertyGroup>
+</Project>
