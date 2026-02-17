@@ -24,7 +24,7 @@ jobs:
       run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-x64 /p:Version=1.0.0.0
 
     - name: Publish Native AOT app win-arm64
-      run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-arm64 true /p:Version=1.0.0.0
+      run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-arm64 /p:Version=1.0.0.0
 
     - name: Upload artifact win-x64
       uses: actions/upload-artifact@v4
