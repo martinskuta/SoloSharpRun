@@ -1,0 +1,39 @@
+name: Publish Native AOT App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-aot:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Publish Native AOT app win-x64
+      run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-x64 /p:Version=1.0.0.0
+
+    - name: Publish Native AOT app win-arm64
+      run: dotnet publish src/SoloSharpRun.csproj -c Release -r win-arm64 true /p:Version=1.0.0.0
+
+    - name: Upload artifact win-x64
+      uses: actions/upload-artifact@v4
+      with:
+        name: native-aot-app-win-x64
+        path: src\artifacts\bin\SoloSharpRun\release_win-x64\native\SoloSharpRun.exe
+      
+    - name: Upload artifact win-arm64
+      uses: actions/upload-artifact@v4
+      with:
+        name: native-aot-app-win-arm64
+        path: src\artifacts\bin\SoloSharpRun\release_win-arm64\native\SoloSharpRun.exe
