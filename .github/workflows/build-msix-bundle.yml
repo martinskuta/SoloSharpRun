@@ -54,14 +54,31 @@ jobs:
           replacement-text: 'win-arm64'
           encoding: 'utf8'
 
-      - name: Create Architecture MSIXs
+      - name: Locate MakeAppx
+        shell: pwsh
         run: |
-          MakeAppx.exe pack /d "bundle/x64" /p "bundle/output/App_x64.msix"
-          MakeAppx.exe pack /d "bundle/arm64" /p "bundle/output/App_arm64.msix"
+          $makeappx = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Filter MakeAppx.exe |
+                      Sort-Object FullName -Descending |
+                      Select-Object -First 1 -ExpandProperty FullName
+          
+          if (-not $makeappx) {
+              Write-Error "MakeAppx.exe not found!"
+              exit 1
+          }
+
+          echo "MAKEAPPX=$makeappx" >> $env:GITHUB_ENV
+
+      
+      - name: Create Architecture MSIXs
+        shell: pwsh
+        run: |
+          & "$env:MAKEAPPX" pack /d "bundle/x64" /p "bundle/output/App_x64.msix"
+          & "$env:MAKEAPPX" pack /d "bundle/arm64" /p "bundle/output/App_arm64.msix"
 
       - name: Create MSIX Bundle
+        shell: pwsh
         run: |
-          MakeAppx.exe bundle /d "src/bundle/output" /p "dist/SoloSharpRun.msixbundle"
+          & "$env:MAKEAPPX" bundle /d "src/bundle/output" /p "dist/SoloSharpRun.msixbundle"
 
       - name: Upload msix bundle
         uses: actions/upload-artifact@v4
