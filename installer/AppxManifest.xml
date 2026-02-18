@@ -25,7 +25,7 @@
 
   <Applications>
     <Application Id="SoloSharpRun"
-      Executable="$targetnametoken$.exe">
+      Executable="SoloSharpRun.exe">
       
       <uap:VisualElements
         DisplayName="Solo Sharp Run"
