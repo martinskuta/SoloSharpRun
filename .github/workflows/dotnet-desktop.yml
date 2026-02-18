@@ -23,8 +23,8 @@ jobs:
       - name: Prepare MSIX manifest and files
         shell: bash
         run: |
-          mv src/artifacts/bin/SoloSharpRun/release_win-x64/native/SoloSharpRun.exe src/bundle/x64/SoloSharpRun.exe
-          mv src/artifacts/bin/SoloSharpRun/release_win-arm4/native/SoloSharpRun.exe src/bundle/arm64/SoloSharpRun.exe
+          mv src/artifacts/publish/SoloSharpRun/release_win-x64/SoloSharpRun.exe src/bundle/x64/SoloSharpRun.exe
+          mv src/artifacts/publish/SoloSharpRun/release_win-arm4/native/SoloSharpRun.exe src/bundle/arm64/SoloSharpRun.exe
           mv src/installer/* src/bundle/x64/
           mv src/installer/* src/bundle/arm64/
           mv src/installer/msix/appx_manifest.template src/bundle/x64/AppxManifest.xml
