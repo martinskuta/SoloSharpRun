@@ -83,5 +83,5 @@ jobs:
       - name: Upload msix bundle
         uses: actions/upload-artifact@v4
         with:
-          name: Upload msix bundle
+          name: MSIX Bundle
           path: dist/SoloSharpRun.msixbundle
