@@ -23,17 +23,17 @@ jobs:
       - name: Prepare MSIX manifest and files
         shell: bash
         run: |
-          mkdir -p src/bundle/x64
-          mkdir -p src/bundle/arm64
-          mv src/artifacts/publish/SoloSharpRun/release_win-x64/SoloSharpRun.exe src/bundle/x64/SoloSharpRun.exe
-          mv src/artifacts/publish/SoloSharpRun/release_win-arm64/SoloSharpRun.exe src/bundle/arm64/SoloSharpRun.exe
-          cp -r src/installer/* src/bundle/x64/
-          cp -r src/installer/* src/bundle/arm64/
+          mkdir -p bundle/x64
+          mkdir -p bundle/arm64
+          mv src/artifacts/publish/SoloSharpRun/release_win-x64/SoloSharpRun.exe bundle/x64/SoloSharpRun.exe
+          mv src/artifacts/publish/SoloSharpRun/release_win-arm64/SoloSharpRun.exe bundle/arm64/SoloSharpRun.exe
+          cp -r installer/* bundle/x64/
+          cp -r installer/* bundle/arm64/
 
       - name: Update manifest version
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: 'src/bundle/**/AppxManifest.xml'
+          files: 'bundle/**/AppxManifest.xml'
           search-text: '%VERSION%'
           replacement-text: '1.0.0.0'
           encoding: 'utf8'
@@ -41,7 +41,7 @@ jobs:
       - name: Update x64 manifest architecture
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: 'src/bundle/x64/AppxManifest.xml'
+          files: 'bundle/x64/AppxManifest.xml'
           search-text: '%PROCESSOR_ARCHITECTURE%'
           replacement-text: 'win-x64'
           encoding: 'utf8'
@@ -49,19 +49,22 @@ jobs:
       - name: Update arm64 manifest architecture
         uses: richardrigutins/replace-in-files@v2
         with:
-          files: 'src/bundle/arm64/AppxManifest.xml'
+          files: 'bundle/arm64/AppxManifest.xml'
           search-text: '%PROCESSOR_ARCHITECTURE%'
           replacement-text: 'win-arm64'
           encoding: 'utf8'
 
       - name: Create Architecture MSIXs
         run: |
-          MakeAppx.exe pack /d "src/bundle/x64" /p "src/bundle/output/App_x64.msix"
-          MakeAppx.exe pack /d "src/bundle/arm64" /p "src/bundle/output/App_arm64.msix"
+          MakeAppx.exe pack /d "bundle/x64" /p "bundle/output/App_x64.msix"
+          MakeAppx.exe pack /d "bundle/arm64" /p "bundle/output/App_arm64.msix"
 
-      # 4. Create the MSIX Bundle
       - name: Create MSIX Bundle
         run: |
-          MakeAppx.exe bundle /d "src/bundle/output" /p "./dist/SoloSharpRun.msixbundle"
+          MakeAppx.exe bundle /d "src/bundle/output" /p "dist/SoloSharpRun.msixbundle"
 
-      # 5. Sign the Bundle (Crucial for installation
+      - name: Upload msix bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Upload msix bundle
+          path: dist/SoloSharpRun.msixbundle
