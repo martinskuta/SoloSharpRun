@@ -43,7 +43,7 @@ jobs:
         with:
           files: 'bundle/x64/AppxManifest.xml'
           search-text: '%PROCESSOR_ARCHITECTURE%'
-          replacement-text: 'win-x64'
+          replacement-text: 'x64'
           encoding: 'utf8'
           
       - name: Update arm64 manifest architecture
@@ -51,7 +51,7 @@ jobs:
         with:
           files: 'bundle/arm64/AppxManifest.xml'
           search-text: '%PROCESSOR_ARCHITECTURE%'
-          replacement-text: 'win-arm64'
+          replacement-text: 'arm64'
           encoding: 'utf8'
 
       - name: Locate MakeAppx
