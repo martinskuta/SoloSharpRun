@@ -78,7 +78,7 @@ jobs:
       - name: Create MSIX Bundle
         shell: pwsh
         run: |
-          & "$env:MAKEAPPX" bundle /d "src/bundle/output" /p "dist/SoloSharpRun.msixbundle"
+          & "$env:MAKEAPPX" bundle /d "bundle/output" /p "dist/SoloSharpRun.msixbundle"
 
       - name: Upload msix bundle
         uses: actions/upload-artifact@v4
