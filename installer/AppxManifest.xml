@@ -25,7 +25,8 @@
 
   <Applications>
     <Application Id="SoloSharpRun"
-      Executable="SoloSharpRun.exe">
+      Executable="SoloSharpRun.exe"
+      EntryPoint="Windows.FullTrustApplication">
       
       <uap:VisualElements
         DisplayName="Solo Sharp Run"
