@@ -31,7 +31,8 @@
         DisplayName="Solo Sharp Run"
         Description="An app that can be associated as a default app to open .cs files and run them directly using dotnet run file.cs"
         BackgroundColor="transparent"
-        Square150x150Logo="assets\logo_square_150.png">
+        Square150x150Logo="assets\logo_square_150.png"
+        Square44x44Logo="assets\logo_square_44.png">
         <uap:DefaultTile Wide310x150Logo="assets\logo_150.png" />
       </uap:VisualElements>
 
