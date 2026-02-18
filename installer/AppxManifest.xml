@@ -12,7 +12,7 @@
     ProcessorArchitecture="%PROCESSOR_ARCHITECTURE%" /> <Properties>
     <DisplayName>Solo Sharp Run</DisplayName>
     <PublisherDisplayName>Martin Skuta</PublisherDisplayName>
-    <Logo>assets\logo_square.png</Logo>
+    <Logo>assets\logo_square_150.png</Logo>
   </Properties>
 
   <Dependencies>
